@@ -2,6 +2,17 @@
 
 This project implements Conway's Game of Life cellular automaton with an AI-powered visualization feature. The application allows users to run Game of Life simulations and generate AI images based on the patterns that emerge.
 
+## AI-Generated Project
+
+This entire project was written by Claude 3.7 Sonnet in Visual Studio Code. As the repository owner, I did not actually write any of the code. This is an experiment in AI-generated software development where the AI assistant:
+
+1. Designed the application architecture
+2. Wrote all the code and implementations
+3. Created the documentation and README
+4. Set up the project structure and files
+
+The project demonstrates the capabilities of modern AI assistants in software development tasks.
+
 ## Features
 
 - Interactive Game of Life simulation with a customizable grid
@@ -105,6 +116,7 @@ Conway's Game of Life is a cellular automaton devised by mathematician John Conw
 4. Any dead cell with exactly three live neighbors becomes alive (reproduction)
 
 These simple rules lead to fascinating emergent patterns and behaviors.
+
 
 ## About the AI Visualization
 
