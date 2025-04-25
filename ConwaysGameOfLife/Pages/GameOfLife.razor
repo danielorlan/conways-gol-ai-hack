@@ -13,7 +13,28 @@
             @(IsRunning ? "Pause" : "Start")
         </button>
         <button @onclick="ResetGrid" class="control-button reset">Reset</button>
-        <button @onclick="RandomizeGrid" class="control-button random">Randomize</button>
+        
+        <div class="pattern-select">
+            <select @bind="SelectedPattern" class="pattern-dropdown">
+                <option value="">-- Select Pattern --</option>
+                <optgroup label="Oscillators">
+                    <option value="blinker">Blinker</option>
+                    <option value="toad">Toad</option>
+                    <option value="beacon">Beacon</option>
+                    <option value="pulsar">Pulsar</option>
+                </optgroup>
+                <optgroup label="Spaceships">
+                    <option value="glider">Glider</option>
+                    <option value="lwss">Lightweight Spaceship</option>
+                </optgroup>
+                <optgroup label="Other">
+                    <option value="random">Random</option>
+                    <option value="glider_gun">Gosper Glider Gun</option>
+                </optgroup>
+            </select>
+            <button @onclick="ApplySelectedPattern" class="control-button apply-pattern">Apply Pattern</button>
+        </div>
+        
         <button @onclick="GenerateImage" class="control-button generate" disabled="@(IsRunning || !HasRun)">
             Generate AI Image
         </button>
@@ -93,6 +114,9 @@
     private bool[,] NextGrid = new bool[GridSize, GridSize];
     private string[,] CellColors = new string[GridSize, GridSize];
     private string[,] NextCellColors = new string[GridSize, GridSize];
+    
+    // Pattern selection
+    private string SelectedPattern = "";
     
     // Available colors for cells
     private readonly string[] ColorPalette = new string[] {
@@ -183,6 +207,212 @@
             InitializeCellColors();
             StateHasChanged();
         }
+    }
+    
+    private void ApplySelectedPattern()
+    {
+        if (!IsRunning && !string.IsNullOrEmpty(SelectedPattern))
+        {
+            // Clear the grid first
+            Grid = new bool[GridSize, GridSize];
+            
+            // Apply the selected pattern
+            switch (SelectedPattern)
+            {
+                case "blinker":
+                    CreateBlinker();
+                    break;
+                case "toad":
+                    CreateToad();
+                    break;
+                case "beacon":
+                    CreateBeacon();
+                    break;
+                case "pulsar":
+                    CreatePulsar();
+                    break;
+                case "glider":
+                    CreateGlider();
+                    break;
+                case "lwss":
+                    CreateLightweightSpaceship();
+                    break;
+                case "glider_gun":
+                    CreateGosperGliderGun();
+                    break;
+                case "random":
+                    RandomizeGrid();
+                    return; // RandomizeGrid already has its own implementation
+                default:
+                    return;
+            }
+            
+            // Assign colors to the cells that are now alive
+            for (int y = 0; y < GridSize; y++)
+            {
+                for (int x = 0; x < GridSize; x++)
+                {
+                    if (Grid[y, x])
+                    {
+                        CellColors[y, x] = GetRandomColor();
+                    }
+                }
+            }
+            
+            StateHasChanged();
+        }
+    }
+    
+    private void CreateBlinker()
+    {
+        // Place a blinker oscillator in the middle of the grid
+        int centerY = GridSize / 2;
+        int centerX = GridSize / 2;
+        
+        Grid[centerY - 1, centerX] = true;
+        Grid[centerY, centerX] = true;
+        Grid[centerY + 1, centerX] = true;
+    }
+    
+    private void CreateToad()
+    {
+        // Place a toad oscillator in the middle of the grid
+        int centerY = GridSize / 2;
+        int centerX = GridSize / 2;
+        
+        Grid[centerY, centerX - 1] = true;
+        Grid[centerY, centerX] = true;
+        Grid[centerY, centerX + 1] = true;
+        Grid[centerY + 1, centerX - 2] = true;
+        Grid[centerY + 1, centerX - 1] = true;
+        Grid[centerY + 1, centerX] = true;
+    }
+    
+    private void CreateBeacon()
+    {
+        // Place a beacon oscillator in the middle of the grid
+        int centerY = GridSize / 2;
+        int centerX = GridSize / 2;
+        
+        Grid[centerY - 1, centerX - 1] = true;
+        Grid[centerY - 1, centerX] = true;
+        Grid[centerY, centerX - 1] = true;
+        Grid[centerY, centerX] = true;
+        
+        Grid[centerY + 1, centerX + 1] = true;
+        Grid[centerY + 1, centerX + 2] = true;
+        Grid[centerY + 2, centerX + 1] = true;
+        Grid[centerY + 2, centerX + 2] = true;
+    }
+    
+    private void CreatePulsar()
+    {
+        // Place a pulsar oscillator in the middle of the grid
+        int centerY = GridSize / 2;
+        int centerX = GridSize / 2;
+        
+        // Place the central pattern (simplified pulsar)
+        for (int offset = -4; offset <= 4; offset += 4)
+        {
+            // Horizontal lines
+            for (int i = -2; i <= 2; i++)
+            {
+                if (i != 0)
+                {
+                    Grid[centerY + offset, centerX + i] = true;
+                    Grid[centerY - offset, centerX + i] = true;
+                }
+            }
+            
+            // Vertical lines
+            for (int i = -2; i <= 2; i++)
+            {
+                if (i != 0)
+                {
+                    Grid[centerY + i, centerX + offset] = true;
+                    Grid[centerY + i, centerX - offset] = true;
+                }
+            }
+        }
+    }
+    
+    private void CreateGlider()
+    {
+        // Place a glider in the top-left quadrant
+        int startY = GridSize / 4;
+        int startX = GridSize / 4;
+        
+        Grid[startY, startX + 1] = true;
+        Grid[startY + 1, startX + 2] = true;
+        Grid[startY + 2, startX] = true;
+        Grid[startY + 2, startX + 1] = true;
+        Grid[startY + 2, startX + 2] = true;
+    }
+    
+    private void CreateLightweightSpaceship()
+    {
+        // Place a lightweight spaceship in the left side
+        int startY = GridSize / 2;
+        int startX = GridSize / 4;
+        
+        Grid[startY, startX + 1] = true;
+        Grid[startY, startX + 4] = true;
+        Grid[startY + 1, startX] = true;
+        Grid[startY + 2, startX] = true;
+        Grid[startY + 2, startX + 4] = true;
+        Grid[startY + 3, startX] = true;
+        Grid[startY + 3, startX + 1] = true;
+        Grid[startY + 3, startX + 2] = true;
+        Grid[startY + 3, startX + 3] = true;
+    }
+    
+    private void CreateGosperGliderGun()
+    {
+        // Place the Gosper Glider Gun pattern in the grid
+        int startY = GridSize / 2 - 5;
+        int startX = 10;
+        
+        // Left square
+        Grid[startY + 4, startX] = true;
+        Grid[startY + 4, startX + 1] = true;
+        Grid[startY + 5, startX] = true;
+        Grid[startY + 5, startX + 1] = true;
+        
+        // Right square
+        Grid[startY + 4, startX + 34] = true;
+        Grid[startY + 4, startX + 35] = true;
+        Grid[startY + 5, startX + 34] = true;
+        Grid[startY + 5, startX + 35] = true;
+        
+        // Left pattern
+        Grid[startY + 2, startX + 13] = true;
+        Grid[startY + 3, startX + 12] = true;
+        Grid[startY + 3, startX + 14] = true;
+        Grid[startY + 4, startX + 11] = true;
+        Grid[startY + 4, startX + 15] = true;
+        Grid[startY + 5, startX + 11] = true;
+        Grid[startY + 5, startX + 15] = true;
+        Grid[startY + 5, startX + 16] = true;
+        Grid[startY + 5, startX + 17] = true;
+        Grid[startY + 6, startX + 11] = true;
+        Grid[startY + 6, startX + 15] = true;
+        Grid[startY + 7, startX + 12] = true;
+        Grid[startY + 7, startX + 14] = true;
+        Grid[startY + 8, startX + 13] = true;
+        
+        // Right pattern
+        Grid[startY + 2, startX + 25] = true;
+        Grid[startY + 3, startX + 23] = true;
+        Grid[startY + 3, startX + 25] = true;
+        Grid[startY + 4, startX + 21] = true;
+        Grid[startY + 4, startX + 22] = true;
+        Grid[startY + 5, startX + 21] = true;
+        Grid[startY + 5, startX + 22] = true;
+        Grid[startY + 6, startX + 21] = true;
+        Grid[startY + 6, startX + 22] = true;
+        Grid[startY + 7, startX + 23] = true;
+        Grid[startY + 7, startX + 25] = true;
+        Grid[startY + 8, startX + 25] = true;
     }
     
     private void RandomizeGrid()
