@@ -71,7 +71,16 @@
         <div class="image-container">
             @if (IsLoading)
             {
-                <div class="loading">Generating image...</div>
+                <div class="loading">
+                    <p>Generating image...</p>
+                    @if (!string.IsNullOrEmpty(LastPrompt))
+                    {
+                        <div class="prompt-preview">
+                            <h4>Using Prompt:</h4>
+                            <p>@LastPrompt</p>
+                        </div>
+                    }
+                </div>
             }
             else if (!string.IsNullOrEmpty(ImageUrl))
             {
