@@ -1,0 +1,186 @@
+/* wwwroot/css/gameOfLife.css */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.content-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.grid-container {
+    flex: 1;
+    min-width: 400px;
+}
+
+.grid {
+    display: grid;
+    gap: 1px;
+    background-color: #ccc;
+    border: 1px solid #999;
+    aspect-ratio: 1;
+    width: 100%;
+}
+
+.cell {
+    background-color: #fff;
+    aspect-ratio: 1;
+    transition: background-color 0.2s;
+}
+
+.cell.alive {
+    background-color: #333;
+}
+
+.game-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.control-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.control-button.start {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.control-button.pause {
+    background-color: #FFC107;
+    color: black;
+}
+
+.control-button.reset {
+    background-color: #F44336;
+    color: white;
+}
+
+.control-button.random {
+    background-color: #2196F3;
+    color: white;
+}
+
+.control-button.generate {
+    background-color: #9C27B0;
+    color: white;
+}
+
+.control-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.speed-control {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.stats {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.image-container {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 15px;
+}
+
+.ai-image {
+    width: 100%;
+    text-align: center;
+}
+
+.ai-image img {
+    max-width: 100%;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.image-prompt {
+    font-size: 14px;
+    color: #666;
+    font-style: italic;
+    text-align: left;
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    width: 100%;
+    font-size: 18px;
+    color: #666;
+}
+
+.no-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    width: 100%;
+    text-align: center;
+    color: #666;
+}
+
+.instructions {
+    padding: 15px;
+}
+
+.instructions h3 {
+    margin-top: 0;
+}
+
+.instructions ol {
+    text-align: left;
+    padding-left: 20px;
+}
+
+@media (max-width: 768px) {
+    .content-area {
+        flex-direction: column;
+    }
+    
+    .grid-container, .image-container {
+        min-width: 100%;
+    }
+    
+    .game-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .speed-control {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+}

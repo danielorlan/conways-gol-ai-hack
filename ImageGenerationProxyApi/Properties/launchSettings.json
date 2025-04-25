@@ -1,0 +1,14 @@
+﻿{
+  "profiles": {
+    "ImageGenerationProxyApi": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:5062;http://localhost:5063",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
