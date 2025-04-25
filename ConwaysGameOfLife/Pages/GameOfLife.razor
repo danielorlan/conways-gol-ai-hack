@@ -378,50 +378,67 @@
     private void CreateGosperGliderGun()
     {
         // Place the Gosper Glider Gun pattern in the grid
-        int startY = 5;  // Start closer to the top edge
-        int startX = 5;  // Start closer to the left edge
+        // Make sure the pattern fits in the grid by calculating center position
+        int centerY = GridSize / 2 - 5;
+        int centerX = 2;  // Start near the left edge to give enough room
+        
+        // The pattern needs about 36x9 cells, so ensure we have enough space
+        if (centerX + 36 >= GridSize || centerY + 11 >= GridSize)
+        {
+            // Fall back to a smaller pattern if grid is too small
+            CreateGlider();
+            return;
+        }
         
         // Left block
-        Grid[startY, startX] = true;
-        Grid[startY, startX + 1] = true;
-        Grid[startY + 1, startX] = true;
-        Grid[startY + 1, startX + 1] = true;
+        Grid[centerY, centerX] = true;
+        Grid[centerY, centerX + 1] = true;
+        Grid[centerY + 1, centerX] = true;
+        Grid[centerY + 1, centerX + 1] = true;
         
         // Right block
-        Grid[startY, startX + 34] = true;
-        Grid[startY, startX + 35] = true;
-        Grid[startY + 1, startX + 34] = true;
-        Grid[startY + 1, startX + 35] = true;
+        Grid[centerY, centerX + 34] = true;
+        Grid[centerY, centerX + 35] = true;
+        Grid[centerY + 1, centerX + 34] = true;
+        Grid[centerY + 1, centerX + 35] = true;
         
         // Left ship
-        Grid[startY + 10, startX + 24] = true;
-        Grid[startY + 11, startX + 22] = true;
-        Grid[startY + 11, startX + 24] = true;
-        Grid[startY + 12, startX + 12] = true;
-        Grid[startY + 12, startX + 13] = true;
-        Grid[startY + 12, startX + 20] = true;
-        Grid[startY + 12, startX + 21] = true;
-        Grid[startY + 13, startX + 11] = true;
-        Grid[startY + 13, startX + 15] = true;
-        Grid[startY + 13, startX + 20] = true;
-        Grid[startY + 13, startX + 21] = true;
-        Grid[startY + 14, startX + 10] = true;
-        Grid[startY + 14, startX + 16] = true;
-        Grid[startY + 14, startX + 20] = true;
-        Grid[startY + 14, startX + 21] = true;
-        Grid[startY + 15, startX + 10] = true;
-        Grid[startY + 15, startX + 14] = true;
-        Grid[startY + 15, startX + 16] = true;
-        Grid[startY + 15, startX + 17] = true;
-        Grid[startY + 15, startX + 22] = true;
-        Grid[startY + 15, startX + 24] = true;
-        Grid[startY + 16, startX + 10] = true;
-        Grid[startY + 16, startX + 16] = true;
-        Grid[startY + 16, startX + 24] = true;
-        Grid[startY + 17, startX + 11] = true;
-        Grid[startY + 17, startX + 15] = true;
-        Grid[startY + 18, startX + 12] = true;
-        Grid[startY + 18, startX + 13] = true;
+        Grid[centerY + 10, centerX + 24] = true;
+        
+        Grid[centerY + 11, centerX + 22] = true;
+        Grid[centerY + 11, centerX + 24] = true;
+        
+        Grid[centerY + 12, centerX + 12] = true;
+        Grid[centerY + 12, centerX + 13] = true;
+        Grid[centerY + 12, centerX + 20] = true;
+        Grid[centerY + 12, centerX + 21] = true;
+        
+        Grid[centerY + 13, centerX + 11] = true;
+        Grid[centerY + 13, centerX + 15] = true;
+        Grid[centerY + 13, centerX + 20] = true;
+        Grid[centerY + 13, centerX + 21] = true;
+        
+        Grid[centerY + 14, centerX + 10] = true;
+        Grid[centerY + 14, centerX + 16] = true;
+        Grid[centerY + 14, centerX + 20] = true;
+        Grid[centerY + 14, centerX + 21] = true;
+        
+        Grid[centerY + 15, centerX + 10] = true;
+        Grid[centerY + 15, centerX + 14] = true;
+        Grid[centerY + 15, centerX + 16] = true;
+        Grid[centerY + 15, centerX + 17] = true;
+        Grid[centerY + 15, centerX + 22] = true;
+        Grid[centerY + 15, centerX + 24] = true;
+        
+        Grid[centerY + 16, centerX + 10] = true;
+        Grid[centerY + 16, centerX + 16] = true;
+        Grid[centerY + 16, centerX + 24] = true;
+        
+        Grid[centerY + 17, centerX + 11] = true;
+        Grid[centerY + 17, centerX + 15] = true;
+        
+        Grid[centerY + 18, centerX + 12] = true;
+        Grid[centerY + 18, centerX + 13] = true;
     }
     
     private void RandomizeGrid()
