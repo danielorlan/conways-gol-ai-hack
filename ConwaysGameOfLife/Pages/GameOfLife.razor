@@ -369,50 +369,50 @@
     private void CreateGosperGliderGun()
     {
         // Place the Gosper Glider Gun pattern in the grid
-        int startY = GridSize / 2 - 5;
-        int startX = 10;
+        int startY = 5;  // Start closer to the top edge
+        int startX = 5;  // Start closer to the left edge
         
-        // Left square
-        Grid[startY + 4, startX] = true;
-        Grid[startY + 4, startX + 1] = true;
-        Grid[startY + 5, startX] = true;
-        Grid[startY + 5, startX + 1] = true;
+        // Left block
+        Grid[startY, startX] = true;
+        Grid[startY, startX + 1] = true;
+        Grid[startY + 1, startX] = true;
+        Grid[startY + 1, startX + 1] = true;
         
-        // Right square
-        Grid[startY + 4, startX + 34] = true;
-        Grid[startY + 4, startX + 35] = true;
-        Grid[startY + 5, startX + 34] = true;
-        Grid[startY + 5, startX + 35] = true;
+        // Right block
+        Grid[startY, startX + 34] = true;
+        Grid[startY, startX + 35] = true;
+        Grid[startY + 1, startX + 34] = true;
+        Grid[startY + 1, startX + 35] = true;
         
-        // Left pattern
-        Grid[startY + 2, startX + 13] = true;
-        Grid[startY + 3, startX + 12] = true;
-        Grid[startY + 3, startX + 14] = true;
-        Grid[startY + 4, startX + 11] = true;
-        Grid[startY + 4, startX + 15] = true;
-        Grid[startY + 5, startX + 11] = true;
-        Grid[startY + 5, startX + 15] = true;
-        Grid[startY + 5, startX + 16] = true;
-        Grid[startY + 5, startX + 17] = true;
-        Grid[startY + 6, startX + 11] = true;
-        Grid[startY + 6, startX + 15] = true;
-        Grid[startY + 7, startX + 12] = true;
-        Grid[startY + 7, startX + 14] = true;
-        Grid[startY + 8, startX + 13] = true;
-        
-        // Right pattern
-        Grid[startY + 2, startX + 25] = true;
-        Grid[startY + 3, startX + 23] = true;
-        Grid[startY + 3, startX + 25] = true;
-        Grid[startY + 4, startX + 21] = true;
-        Grid[startY + 4, startX + 22] = true;
-        Grid[startY + 5, startX + 21] = true;
-        Grid[startY + 5, startX + 22] = true;
-        Grid[startY + 6, startX + 21] = true;
-        Grid[startY + 6, startX + 22] = true;
-        Grid[startY + 7, startX + 23] = true;
-        Grid[startY + 7, startX + 25] = true;
-        Grid[startY + 8, startX + 25] = true;
+        // Left ship
+        Grid[startY + 10, startX + 24] = true;
+        Grid[startY + 11, startX + 22] = true;
+        Grid[startY + 11, startX + 24] = true;
+        Grid[startY + 12, startX + 12] = true;
+        Grid[startY + 12, startX + 13] = true;
+        Grid[startY + 12, startX + 20] = true;
+        Grid[startY + 12, startX + 21] = true;
+        Grid[startY + 13, startX + 11] = true;
+        Grid[startY + 13, startX + 15] = true;
+        Grid[startY + 13, startX + 20] = true;
+        Grid[startY + 13, startX + 21] = true;
+        Grid[startY + 14, startX + 10] = true;
+        Grid[startY + 14, startX + 16] = true;
+        Grid[startY + 14, startX + 20] = true;
+        Grid[startY + 14, startX + 21] = true;
+        Grid[startY + 15, startX + 10] = true;
+        Grid[startY + 15, startX + 14] = true;
+        Grid[startY + 15, startX + 16] = true;
+        Grid[startY + 15, startX + 17] = true;
+        Grid[startY + 15, startX + 22] = true;
+        Grid[startY + 15, startX + 24] = true;
+        Grid[startY + 16, startX + 10] = true;
+        Grid[startY + 16, startX + 16] = true;
+        Grid[startY + 16, startX + 24] = true;
+        Grid[startY + 17, startX + 11] = true;
+        Grid[startY + 17, startX + 15] = true;
+        Grid[startY + 18, startX + 12] = true;
+        Grid[startY + 18, startX + 13] = true;
     }
     
     private void RandomizeGrid()
