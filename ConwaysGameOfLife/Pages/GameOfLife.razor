@@ -529,24 +529,26 @@
         bool hasSymmetry = DetectSymmetry();
         bool hasOscillator = Generation > 5;
         
-        // Determine the type of natural scene based on pattern characteristics
-        string naturalSubject = GetNaturalSubject(clusters, hasSymmetry, density);
-        string environment = GetNaturalEnvironment(density, hasOscillator);
-        string activity = GetNaturalActivity(clusters.Count, hasOscillator);
-        string timeOfDay = GetRandomTimeOfDay();
-        string weatherCondition = GetRandomWeatherCondition();
+        // Determine pattern-based descriptors that work well with simpler image models
+        string patternType = GetPatternType(clusters, density, hasSymmetry);
+        string landscapeType = GetLandscapeType(density, clusters.Count);
+        string weatherElement = GetWeatherElement(clusters.Count, hasOscillator);
+        string timeOfDay = GetTimeOfDayDescription(density);
         
         // Generate artistic direction
-        string visualStyle = GetRandomVisualStyle();
-        string lighting = GetRandomLighting();
+        string visualStyle = GetAbstractVisualStyle();
+        string composition = GetCompositionStyle(hasSymmetry);
+        string colorScheme = GetColorScheme();
         
-        // Build the final prompt
-        string finalPrompt = $"A nature photograph of {naturalSubject} {activity} in {environment} during {timeOfDay} with {weatherCondition}. " +
-                             $"The {visualStyle} image should have {lighting} lighting. " +
-                             $"The scene should capture the intricate patterns, relationships, and emergent behaviors found in Conway's Game of Life cellular automaton.";
+        // Build the final prompt that focuses on abstract patterns and landscapes
+        string finalPrompt = $"A {visualStyle} {landscapeType} with {patternType} patterns. " +
+                             $"The scene has {weatherElement} during {timeOfDay}. " +
+                             $"{composition} with a {colorScheme} color palette. " +
+                             $"The image should evoke the mathematical beauty of Conway's Game of Life cellular automaton.";
         
         return finalPrompt;
     }
+    
     private List<int> IdentifyClusters()
     {
         // A simple cluster identification algorithm using flood fill
@@ -598,160 +600,187 @@
         return size;
     }
     
-    private string GetNaturalSubject(List<int> clusters, bool hasSymmetry, double density)
+    private string GetPatternType(List<int> clusters, double density, bool hasSymmetry)
     {
-        // Animals for different pattern types
-        string[] smallCreatures = {
-            "a colony of ants", "a swarm of honeybees", "a cluster of butterflies",
-            "a group of ladybugs", "tiny hummingbirds", "colorful dragonflies",
-            "iridescent beetles", "monarch butterflies", "fireflies", "damselflies"
+        string[] sparsePatterns = {
+            "minimal", "sparse", "scattered", "isolated", "dispersed",
+            "fragmented", "delicate", "subtle", "thin", "rare"
         };
         
-        string[] largeAnimals = {
-            "a herd of zebras", "a flock of flamingos", "a pod of dolphins",
-            "a school of fish", "a murmuration of starlings", "a pride of lions",
-            "a tower of giraffes", "a group of peacocks", "a parliament of owls"
+        string[] densePatterns = {
+            "intricate", "complex", "elaborate", "detailed", "dense",
+            "abundant", "rich", "textured", "comprehensive", "layered"
         };
         
-        string[] symmetricalAnimals = {
-            "monarch butterflies with symmetrical wing patterns", "peacocks with displayed feathers",
-            "jellyfish with radial bodies", "sea stars", "snowflake-patterned beetles", 
-            "turtles with patterned shells", "tropical fish with mirror-image markings"
+        string[] symmetricalPatterns = {
+            "symmetrical", "mirrored", "balanced", "ordered", "geometric", 
+            "crystalline", "kaleidoscopic", "repeating", "fractal", "mandala-like"
         };
         
         Random random = new Random();
         
-        // Choose animal type based on pattern characteristics
         if (hasSymmetry)
         {
-            return symmetricalAnimals[random.Next(symmetricalAnimals.Length)];
-        }
-        else if (clusters.Count == 1 && clusters[0] > 20 || density > 0.3)
-        {
-            return largeAnimals[random.Next(largeAnimals.Length)];
-        }
-        else
-        {
-            return smallCreatures[random.Next(smallCreatures.Length)];
-        }
-    }
-
-    private string GetNaturalEnvironment(double density, bool hasOscillator)
-    {
-        string[] denseEnvironments = {
-            "a lush rainforest", "a dense coral reef", "a vibrant meadow of wildflowers",
-            "an ancient redwood forest", "a thriving wetland ecosystem", "a jungle canopy",
-            "a rich kelp forest", "a blooming botanical garden"
-        };
-        
-        string[] sparseEnvironments = {
-            "an open savanna", "a serene desert landscape", "rolling sand dunes",
-            "a rocky coastal shore", "an alpine meadow", "a sparse tundra",
-            "a tranquil pond", "a misty mountain range"
-        };
-        
-        string[] dynamicEnvironments = {
-            "churning river rapids", "tidal pools at the ocean's edge", "wind-swept grasslands",
-            "a dynamic estuary", "shifting sand formations", "waves breaking on a reef",
-            "a forest during changing seasons", "a prairie during migration season"
-        };
-        
-        Random random = new Random();
-        
-        if (hasOscillator)
-        {
-            return dynamicEnvironments[random.Next(dynamicEnvironments.Length)];
+            return symmetricalPatterns[random.Next(symmetricalPatterns.Length)];
         }
         else if (density > 0.25)
         {
-            return denseEnvironments[random.Next(denseEnvironments.Length)];
+            return densePatterns[random.Next(densePatterns.Length)];
         }
         else
         {
-            return sparseEnvironments[random.Next(sparseEnvironments.Length)];
+            return sparsePatterns[random.Next(sparsePatterns.Length)];
         }
     }
 
-    private string GetNaturalActivity(int clusterCount, bool hasOscillator)
+    private string GetLandscapeType(double density, int clusterCount)
     {
-        string[] activities = {
-            "foraging for food", "building nests", "migrating across", "communicating with each other",
-            "following natural patterns", "adapting to their environment", "displaying courtship behaviors",
-            "creating geometric formations", "following murmurations", "demonstrating swarm intelligence"
+        string[] denseLandscapes = {
+            "mountain range", "canyon formation", "rocky coastline", "forest vista",
+            "dense cloud formations", "rugged terrain", "geological formations", "cliff face",
+            "volcanic landscape", "river delta", "ancient rock formations"
         };
         
-        string[] cyclicActivities = {
-            "flowing in rhythmic patterns", "moving in synchronization", "creating circular formations",
-            "performing a natural dance", "cycling through seasonal behaviors", "pulsing with life",
-            "creating rippling patterns", "moving in wave-like formations"
+        string[] sparseLandscapes = {
+            "desert landscape", "open plains", "calm lake surface", "foggy valley",
+            "minimalist beach", "rolling hills", "distant horizon", "tranquil water",
+            "open sky", "sand dunes", "salt flats"
         };
         
-        string[] groupActivities = {
-            "forming complex social structures", "creating protective formations",
-            "coordinating group movement", "sharing resources", "participating in symbiotic relationships",
-            "establishing territories", "collaborating for survival"
+        string[] complexLandscapes = {
+            "eroded landscape", "wave patterns", "rock strata", "flowing water patterns",
+            "wind-sculpted terrain", "natural mosaic", "layered earth", "topographical map",
+            "natural tapestry", "terrain contours", "crystallized mineral formation"
+        };
+        
+        Random random = new Random();
+        
+        if (clusterCount > 5)
+        {
+            return complexLandscapes[random.Next(complexLandscapes.Length)];
+        }
+        else if (density > 0.25)
+        {
+            return denseLandscapes[random.Next(denseLandscapes.Length)];
+        }
+        else
+        {
+            return sparseLandscapes[random.Next(sparseLandscapes.Length)];
+        }
+    }
+
+    private string GetWeatherElement(int clusterCount, bool hasOscillator)
+    {
+        string[] staticWeather = {
+            "clear skies", "gentle mist", "soft fog", "dappled light",
+            "hovering clouds", "morning dew", "still air", "hazy atmosphere",
+            "scattered sunbeams", "light haze", "calm conditions"
+        };
+        
+        string[] dynamicWeather = {
+            "rippling waves", "flowing clouds", "shifting fog", "drifting mist",
+            "moving shadows", "light patterns", "swirling fog", "flowing water",
+            "dancing light", "shifting sand", "undulating patterns"
+        };
+        
+        string[] complexWeather = {
+            "intricate cloud formations", "layered fog", "overlapping shadows",
+            "interacting light beams", "complex reflections", "multiple light sources",
+            "contrasting elements", "varied atmospheric conditions", "textured mist"
         };
         
         Random random = new Random();
         
         if (hasOscillator)
         {
-            return cyclicActivities[random.Next(cyclicActivities.Length)];
+            return dynamicWeather[random.Next(dynamicWeather.Length)];
         }
-        else if (clusterCount > 3)
+        else if (clusterCount > 4)
         {
-            return groupActivities[random.Next(groupActivities.Length)];
+            return complexWeather[random.Next(complexWeather.Length)];
         }
         else
         {
-            return activities[random.Next(activities.Length)];
+            return staticWeather[random.Next(staticWeather.Length)];
         }
     }
 
-    private string GetRandomTimeOfDay()
+    private string GetTimeOfDayDescription(double density)
     {
-        string[] timesOfDay = {
-            "early morning", "golden hour sunrise", "bright midday", "soft afternoon light",
-            "golden hour sunset", "twilight", "dusk", "dawn", "the blue hour"
+        string[] brightTimes = {
+            "bright midday", "clear afternoon", "full daylight", "cloudless day",
+            "harsh noon", "direct sunlight", "vivid daylight", "unfiltered sunlight"
+        };
+        
+        string[] softTimes = {
+            "golden hour", "early morning", "soft sunset", "gentle twilight",
+            "blue hour", "dawn light", "dusk", "muted afternoon light",
+            "fading daylight", "first light", "last light"
         };
         
         Random random = new Random();
-        return timesOfDay[random.Next(timesOfDay.Length)];
-    }
-
-    private string GetRandomWeatherCondition()
-    {
-        string[] weatherConditions = {
-            "clear skies", "gentle mist", "soft fog", "dappled sunlight",
-            "light rain", "a gentle breeze", "scattered clouds", "morning dew",
-            "golden sunlight", "crisp air", "shimmering heat waves"
-        };
         
-        Random random = new Random();
-        return weatherConditions[random.Next(weatherConditions.Length)];
+        // Higher density patterns might look better with softer lighting
+        if (density > 0.3)
+        {
+            return softTimes[random.Next(softTimes.Length)];
+        }
+        else
+        {
+            return brightTimes[random.Next(brightTimes.Length)];
+        }
     }
 
-    private string GetRandomVisualStyle()
+    private string GetAbstractVisualStyle()
     {
         string[] visualStyles = {
-            "photorealistic", "high-definition nature documentary", "macro photography",
-            "David Attenborough-style wildlife documentary", "National Geographic", "cinematic",
-            "detailed wildlife photography", "professional nature photography"
+            "minimalist", "abstract", "geometric", "ethereal", "surreal",
+            "impressionistic", "textural", "atmospheric", "graphic", "monochromatic",
+            "high-contrast", "architectural", "topographic", "crystalline"
         };
         
         Random random = new Random();
         return visualStyles[random.Next(visualStyles.Length)];
     }
 
-    private string GetRandomLighting()
+    private string GetCompositionStyle(bool hasSymmetry)
     {
-        string[] lighting = {
-            "natural", "soft", "dramatic", "backlit", "sidelit", "golden", 
-            "diffused", "dappled", "atmospheric", "moody", "high-contrast"
+        string[] symmetricalCompositions = {
+            "Perfect symmetrical composition", "Mirror-like balance", "Radial composition",
+            "Centrally balanced arrangement", "Perfectly ordered composition",
+            "Grid-like structure", "Mathematical proportion", "Precise arrangement"
+        };
+        
+        string[] asymmetricalCompositions = {
+            "Dynamic composition", "Rule-of-thirds arrangement", "Asymmetrical balance",
+            "Off-center focal point", "Flowing arrangement", "Natural composition",
+            "Diagonal elements", "Tension-filled arrangement", "Carefully unbalanced elements"
         };
         
         Random random = new Random();
-        return lighting[random.Next(lighting.Length)];
+        
+        if (hasSymmetry)
+        {
+            return symmetricalCompositions[random.Next(symmetricalCompositions.Length)];
+        }
+        else
+        {
+            return asymmetricalCompositions[random.Next(asymmetricalCompositions.Length)];
+        }
+    }
+
+    private string GetColorScheme()
+    {
+        string[] colorSchemes = {
+            "monochromatic blue", "earth tone", "high-contrast black and white",
+            "minimalist grayscale", "warm sunset", "cool blue and purple",
+            "complementary orange and blue", "analogous green and blue",
+            "muted pastel", "vibrant primary colors", "soft neutral",
+            "dramatic dark", "ethereal light", "jewel tone", "metallic"
+        };
+        
+        Random random = new Random();
+        return colorSchemes[random.Next(colorSchemes.Length)];
     }
     
     private bool DetectSymmetry()
