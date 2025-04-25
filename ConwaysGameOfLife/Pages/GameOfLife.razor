@@ -566,13 +566,110 @@
         string composition = GetCompositionStyle(hasSymmetry);
         string colorScheme = GetColorScheme();
         
-        // Build the final prompt that focuses on abstract patterns and landscapes
-        string finalPrompt = $"A {visualStyle} {landscapeType} with {patternType} patterns. " +
-                             $"The scene has {weatherElement} during {timeOfDay}. " +
-                             $"{composition} with a {colorScheme} color palette. " +
-                             $"The image should evoke the mathematical beauty of Conway's Game of Life cellular automaton.";
+        // Extract the dominant colors from the live cells
+        var dominantColors = GetDominantCellColors();
+        string colorDescription = GetColorDescription(dominantColors);
+        
+        // Get pattern shape description
+        string patternShape = GetPatternShapeDescription();
+        
+        // Build the final prompt that incorporates cell patterns into a nature scene
+        string finalPrompt = $"A photorealistic {landscapeType} during {timeOfDay} with {weatherElement}. " +
+                             $"In the foreground or mid-ground, there is a {patternType} pattern of {colorDescription} lights or " +
+                             $"glowing elements arranged in {patternShape}. " +
+                             $"The pattern resembles cellular structures from Conway's Game of Life. " +
+                             $"{composition} with an overall {colorScheme} color palette. " +
+                             $"The glowing patterns should stand out against the natural {visualStyle} background.";
         
         return finalPrompt;
+    }
+    
+    private Dictionary<string, int> GetDominantCellColors()
+    {
+        // Count occurrences of each color in living cells
+        Dictionary<string, int> colorCounts = new Dictionary<string, int>();
+        
+        for (int y = 0; y < GridSize; y++)
+        {
+            for (int x = 0; x < GridSize; x++)
+            {
+                if (Grid[y, x])
+                {
+                    string cellColor = CellColors[y, x];
+                    if (colorCounts.ContainsKey(cellColor))
+                    {
+                        colorCounts[cellColor]++;
+                    }
+                    else
+                    {
+                        colorCounts[cellColor] = 1;
+                    }
+                }
+            }
+        }
+        
+        // Sort by occurrence count (descending)
+        return colorCounts.OrderByDescending(pair => pair.Value)
+                         .Take(3) // Take top 3 dominant colors
+                         .ToDictionary(pair => pair.Key, pair => pair.Value);
+    }
+    
+    private string GetColorDescription(Dictionary<string, int> dominantColors)
+    {
+        // Convert hex colors to descriptive names (simplified)
+        Dictionary<string, string> colorNames = new Dictionary<string, string>
+        {
+            { "#FF5252", "red" }, { "#FF4081", "pink" }, { "#E040FB", "purple" },
+            { "#7C4DFF", "deep purple" }, { "#536DFE", "indigo" }, { "#448AFF", "blue" },
+            { "#40C4FF", "light blue" }, { "#18FFFF", "cyan" }, { "#64FFDA", "teal" },
+            { "#69F0AE", "green" }, { "#B2FF59", "light green" }, { "#EEFF41", "lime" },
+            { "#FFFF00", "yellow" }, { "#FFD740", "amber" }, { "#FFAB40", "orange" }
+        };
+        
+        if (!dominantColors.Any())
+            return "multicolored";
+            
+        var colorList = dominantColors.Keys.Select(hex => 
+            colorNames.ContainsKey(hex) ? colorNames[hex] : "colorful").ToList();
+            
+        if (colorList.Count == 1)
+            return colorList[0];
+        else if (colorList.Count == 2)
+            return $"{colorList[0]} and {colorList[1]}";
+        else
+            return $"{colorList[0]}, {colorList[1]}, and {colorList[2]}";
+    }
+    
+    private string GetPatternShapeDescription()
+    {
+        // Analyze the current pattern to determine its shape
+        var clusters = IdentifyClusters();
+        int largestClusterSize = clusters.Any() ? clusters[0] : 0;
+        int livingCells = CountLivingCells();
+        
+        string[] patternShapes = {
+            "a spiral formation", "scattered dots", "branching structures", 
+            "geometric shapes", "organic clusters", "cellular formations", 
+            "a flowing stream", "concentric circles", "linear patterns",
+            "grid-like arrangements", "intricate networks", "crystalline structures"
+        };
+        
+        // Additional shapes based on pattern analysis
+        if (DetectSymmetry())
+        {
+            return "symmetrical formations";
+        }
+        else if (largestClusterSize > livingCells / 2)
+        {
+            return "a large central formation with smaller satellite patterns";
+        }
+        else if (clusters.Count > 5)
+        {
+            return "multiple small interconnected clusters";
+        }
+        
+        Random random = new Random();
+        return patternShapes[random.Next(patternShapes.Length)];
     }
     
     private List<int> IdentifyClusters()
